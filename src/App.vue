@@ -21,10 +21,10 @@
 				slot="header"
 				slot-scope="{ headerProps }"
 				:header-props="headerProps"
-				:previousYearLabel="themeOptions.previousYearLabel"
-				:previousPeriodLabel="themeOptions.previousPeriodLabel"
-				:nextPeriodLabel="themeOptions.nextPeriodLabel"
-				:nextYearLabel="themeOptions.nextYearLabel"
+				:previousYearLabel="'/img/previousYearLabel.svg'"
+				:previousPeriodLabel="'/img/previousPeriod.svg'"
+				:nextPeriodLabel="'/img/nextPeriodLabel.svg'"
+				:nextYearLabel="'img/nextYearLabel.svg'"
 				@input="setShowDate"
 			/>
 		</calendar-view>
@@ -60,7 +60,7 @@ export default {
 						height: "2.1em",
 						border: "0px",
 						previousYearLabel: "\uE5CB\uE5CB",
-						previousPeriodLabel: "\uE5CB",
+						previousPeriodLabel: "\uE5CC",
 						nextPeriodLabel: "\uE5CC",
 						nextYearLabel: "\uE5CC\uE5CC",
 						currentPeriodLabel: "Today",

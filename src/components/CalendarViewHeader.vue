@@ -1,20 +1,19 @@
 <template>
 	<div class="cv-header">
 		<div class="cv-header-nav">
-			<button
+			<img
 				:disabled="!headerProps.previousYear"
-				class="previousYear"
-				aria-label="Previous Year"
+				class="previousPeriod"
+				aria-label="Previous Period"
+				:src="previousYearLabel"
 				@click.prevent="onInput(headerProps.previousYear)"
-			>
-				{{ previousYearLabel }}
-			</button>
-			<button
+			/>
+			<img
 				:disabled="!headerProps.previousPeriod"
 				class="previousPeriod"
 				aria-label="Previous Period"
 				@click.prevent="onInput(headerProps.previousPeriod)"
-				v-html="previousPeriodLabel"
+				:src="previousPeriodLabel"
 			/>
 			<button
 				class="currentPeriod"
@@ -23,22 +22,20 @@
 			>
 				{{ headerProps.currentPeriodLabel }}
 			</button>
-			<button
+			<img
+				:src="nextPeriodLabel"
 				:disabled="!headerProps.nextPeriod"
 				class="nextPeriod"
 				aria-label="Next Period"
 				@click.prevent="onInput(headerProps.nextPeriod)"
-			>
-				{{ nextPeriodLabel }}
-			</button>
-			<button
+			/>
+			<img
+				:src="nextYearLabel"
 				:disabled="!headerProps.nextYear"
 				class="nextYear"
 				aria-label="Next Year"
 				@click.prevent="onInput(headerProps.nextYear)"
-			>
-				{{ nextYearLabel }}
-			</button>
+			/>
 		</div>
 		<div class="periodLabel">
 			<slot name="label">{{ headerProps.periodLabel }}</slot>
@@ -66,6 +63,26 @@ export default {
 }
 </script>
 <style>
+.nextYear {
+	cursor: pointer;
+	margin-right: 12px;
+}
+
+.nextPeriod {
+	cursor: pointer;
+	margin-right: 12px;
+}
+
+.previousPeriod {
+	cursor: pointer;
+	margin-right: 12px;
+}
+
+.previousYear {
+	cursor: pointer;
+	margin-right: 12px;
+}
+
 .cv-header {
 	display: flex;
 	flex: 0 1 auto;
