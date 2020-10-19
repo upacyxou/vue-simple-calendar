@@ -545,6 +545,9 @@ export default {
 			if (b.startDate < a.startDate) return 1
 			if (a.endDate > b.endDate) return -1
 			if (b.endDate > a.endDate) return 1
+			if (a.order !== undefined && b.order !== undefined) {
+				return a.order < b.order ? -1 : 1
+			}
 			return a.id < b.id ? -1 : 1
 		},
 
