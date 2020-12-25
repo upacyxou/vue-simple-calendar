@@ -40,7 +40,9 @@
 					'week' + (weekIndex + 1),
 					'ws' + isoYearMonthDay(weekStart),
 				]"
-				:style="weekStyles ? weekStyles[weekIndex] : undefined"
+				:style="`${
+					weekStyles ? weekStyles[weekIndex] : undefined
+				}; min-height: ${calculateTotalHeight(weekStart)};`"
 			>
 				<div v-if="displayWeekNumbers" class="cv-weeknumber">
 					<slot
@@ -376,6 +378,27 @@ export default {
 		// ******************************
 		// UI Events
 		// ******************************
+
+		calculateTotalHeight(weekStart) {
+			const itemsOnWeek = this.getWeekItems(weekStart)
+			const test = {}
+			for (const item of itemsOnWeek) {
+				if (test[item.startDate.getTime()] === undefined) {
+					test[item.startDate.getTime()] = 1
+					continue
+				}
+				test[item.startDate.getTime()]++
+			}
+			let biggestAmount = 0
+			for (const testKey in test) {
+				if (test[testKey] > biggestAmount) biggestAmount = test[testKey]
+			}
+			if (biggestAmount && biggestAmount <= 4) {
+				biggestAmount += 4.5
+			}
+			console.log(biggestAmount)
+			return `calc(${this.itemContentHeight} * ${biggestAmount})`
+		},
 
 		onClickDay(day, windowEvent) {
 			if (this.disablePast && this.isInPast(day)) return
