@@ -10,8 +10,8 @@
 			'period-' + displayPeriodUom,
 			'periodCount-' + displayPeriodCount,
 			{
-				past: isPastMonth(periodStart),
-				future: isFutureMonth(periodStart),
+				past: isPastMonth(periodStart, todayDate),
+				future: isFutureMonth(periodStart, todayDate),
 				noIntl: !supportsIntl,
 			},
 		]"
@@ -64,10 +64,10 @@
 							'd' + paddedDay(day),
 							'instance' + instanceOfMonth(day),
 							{
-								today: isSameDate(day, today()),
+								today: isSameDate(day, today(todayDate)),
 								outsideOfMonth: !isSameMonth(day, defaultedShowDate),
-								past: isInPast(day),
-								future: isInFuture(day),
+								past: isInPast(day, todayDate),
+								future: isInFuture(day, todayDate),
 								last: isLastDayOfMonth(day),
 								lastInstance: isLastInstanceOfMonth(day),
 								hasItems: dayHasItems(day),
@@ -164,6 +164,7 @@ export default {
 		currentPeriodLabelIcons: { type: String, default: "⇤-⇥" },
 		doEmitItemMouseEvents: { type: Boolean, default: false },
 		weekStyles: { type: Array, default: undefined },
+		todayDate: { type: Date, default: new Date() },
 	},
 
 	data: () => ({
@@ -187,7 +188,7 @@ export default {
 		*/
 		defaultedShowDate() {
 			if (this.showDate) return this.dateOnly(this.showDate)
-			return this.today()
+			return this.today(this.todayDate)
 		},
 
 		/*
@@ -294,7 +295,7 @@ export default {
 		// Period that today's date sits within
 		currentPeriodStart() {
 			return this.beginningOfPeriod(
-				this.today(),
+				this.today(this.todayDate),
 				this.displayPeriodUom,
 				this.startingDayOfWeek
 			)
@@ -399,8 +400,8 @@ export default {
 		},
 
 		onClickDay(day, windowEvent) {
-			if (this.disablePast && this.isInPast(day)) return
-			if (this.disableFuture && this.isInFuture(day)) return
+			if (this.disablePast && this.isInPast(day, this.todayDate)) return
+			if (this.disableFuture && this.isInFuture(day, this.todayDate)) return
 			this.$emit(
 				"click-date",
 				day,
@@ -442,8 +443,10 @@ export default {
 				this.displayPeriodUom,
 				this.displayPeriodCount
 			)
-			if (this.disablePast && newEndDate <= this.today()) return null
-			if (this.disableFuture && newStartDate > this.today()) return null
+			if (this.disablePast && newEndDate <= this.today(this.todayDate))
+				return null
+			if (this.disableFuture && newStartDate > this.today(this.todayDate))
+				return null
 			return newStartDate
 		},
 
@@ -632,7 +635,7 @@ export default {
 				if (continued) ep.classes.push("continued")
 				if (this.dayDiff(weekStart, ep.endDate) > 6)
 					ep.classes.push("toBeContinued")
-				if (this.isInPast(ep.endDate)) ep.classes.push("past")
+				if (this.isInPast(ep.endDate, this.todayDate)) ep.classes.push("past")
 				if (ep.originalItem.url) ep.classes.push("hasUrl")
 				for (let d = 0; d < 7; d++) {
 					if (d === startOffset) {
