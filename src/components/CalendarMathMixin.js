@@ -10,8 +10,8 @@ export default {
 		// Series
 		// ******************************
 
-		today() {
-			return this.dateOnly(new Date())
+		today(todayDate = new Date()) {
+			return this.dateOnly(todayDate)
 		},
 
 		beginningOfPeriod(d, periodUom, startDow) {
@@ -170,18 +170,22 @@ export default {
 			d1.getFullYear() === d2.getFullYear() &&
 			d1.getMonth() === d2.getMonth(),
 
-		isPastMonth(d) {
-			return this.beginningOfMonth(d) < this.beginningOfMonth(this.today())
+		isPastMonth(d, todayDate = new Date()) {
+			return (
+				this.beginningOfMonth(d) < this.beginningOfMonth(this.today(todayDate))
+			)
 		},
-		isFutureMonth(d) {
-			return this.beginningOfMonth(d) > this.beginningOfMonth(this.today())
+		isFutureMonth(d, todayDate = new Date()) {
+			return (
+				this.beginningOfMonth(d) > this.beginningOfMonth(this.today(todayDate))
+			)
 		},
 
-		isInFuture(d) {
-			return this.dateOnly(d) > this.today()
+		isInFuture(d, todayDate = new Date()) {
+			return this.dateOnly(d) > this.today(todayDate)
 		},
-		isInPast(d) {
-			return this.dateOnly(d) < this.today()
+		isInPast(d, todayDate = new Date()) {
+			return this.dateOnly(d) < this.today(todayDate)
 		},
 		isLastInstanceOfMonth(d) {
 			return d.getMonth() !== this.addDays(d, 7).getMonth()
